@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Paging Slips{% endblock %}</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 1.5rem; color: #222; }
+  label { display: block; margin: .75rem 0 .25rem; font-weight: 600; }
+  select, button, input { font-size: 1rem; padding: .35rem .5rem; }
+  table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+  th, td { border-bottom: 1px solid #ddd; padding: .35rem .5rem; text-align: left; vertical-align: top; }
+  th { background: #f4f4f4; }
+  .actions { margin: 1rem 0; display: flex; gap: .5rem; flex-wrap: wrap; }
+  .muted { color: #666; }
+  @media print { .no-print { display: none !important; } body { margin: 0; } }
+</style>
+{% block head %}{% endblock %}
+</head>
+<body>
+{% block body %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}{{ list_label }} · {{ location }}{% endblock %}
+{% block body %}
+<h1>{{ list_label }} · {{ location }}</h1>
+<p class="muted no-print">{{ rows|length }} to page. <a href="/">Change location</a></p>
+<form action="/slips" method="get" target="_blank">
+  <input type="hidden" name="location" value="{{ location }}">
+  <input type="hidden" name="type" value="{{ list_type }}">
+  <div class="actions no-print">
+    <button type="submit">Print slips for checked</button>
+    <a href="/slips?location={{ location|urlencode }}&type={{ list_type }}" target="_blank"><button type="button">Print all slips</button></a>
+    <a href="/list.csv?location={{ location|urlencode }}&type={{ list_type }}"><button type="button">Download CSV</button></a>
+    <button type="button" onclick="window.print()">Print this list</button>
+  </div>
+  <table>
+    <thead><tr>
+      <th class="no-print"><input type="checkbox" onclick="document.querySelectorAll('input[name=hold]').forEach(c=>c.checked=this.checked)"></th>
+      <th>Call number</th><th>Title</th><th>Barcode</th><th>Location</th>
+      <th>{% if list_type == 'innreach' %}Requesting site{% else %}Pickup{% endif %}</th><th>Placed</th>
+    </tr></thead>
+    <tbody>
+    {% for r in rows %}
+      <tr>
+        <td class="no-print"><input type="checkbox" name="hold" value="{{ r.hold_id }}"></td>
+        <td>{{ r.call_number or '' }}{% if r.volume %} {{ r.volume }}{% endif %}</td>
+        <td>{{ r.title or '' }}<br><span class="muted">{{ r.author or '' }}</span></td>
+        <td>{{ r.barcode or '' }}<br><span class="muted">{{ r.item_record_num }}</span></td>
+        <td>{{ r.item_location }}</td>
+        <td>{% if list_type == 'innreach' %}{{ r.ir_pickup_location_code or '' }}{% else %}{{ r.pickup_location_code or '' }}{% endif %}</td>
+        <td>{{ r.placed_gmt.strftime('%Y-%m-%d') if r.placed_gmt else '' }}</td>
+      </tr>
+    {% else %}
+      <tr><td colspan="7">Nothing to page at this location.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</form>
+{% endblock %}

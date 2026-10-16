@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Reprint paging slips</h1>
+<form action="/list" method="get">
+  <label for="location">Location</label>
+  <input list="locations" id="location" name="location" required
+         placeholder="Location code or prefix, e.g. mn">
+  <datalist id="locations">
+    {% for loc in locations %}<option value="{{ loc.code }}">{{ loc.name }}</option>{% endfor %}
+  </datalist>
+  <p class="muted">A short code matches every location that starts with it.</p>
+
+  <label>List</label>
+  {% for key, label in list_types.items() %}
+  <div><input type="radio" id="t-{{ key }}" name="type" value="{{ key }}" {% if loop.first %}checked{% endif %}>
+    <label for="t-{{ key }}" style="display:inline;font-weight:normal">{{ label }}</label></div>
+  {% endfor %}
+
+  <div class="actions"><button type="submit">Pull paging list</button></div>
+</form>
+{% endblock %}
